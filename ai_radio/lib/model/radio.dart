@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'package:collection/collection.dart';
 
 class MyRadioList {
-  final List<MyRadio> radios;
+   List<MyRadio> radios;
   MyRadioList({
     required this.radios,
   });

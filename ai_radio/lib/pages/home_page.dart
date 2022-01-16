@@ -1,9 +1,9 @@
 import 'package:ai_radio/model/radio.dart';
 import 'package:ai_radio/utils/ai_util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   //List <MyRadio> radios;
@@ -12,7 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<MyRadio> radios;
+  List<MyRadio> radios;
+
   @override
   void initState() {
     super.initState();
@@ -53,16 +54,66 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final rad = radios[index];
                 return VxBox(
-                  child:ZStack(
-                    
-                  )
-                )
-                .bgImage(
-                  
-                )
+                        child: ZStack([
+                  Positioned(
+                    top: 0.0,
+                    bottom: 0.0,
+                    child: VxBox(
+                      child: rad.category.text.uppercase.white.make().px16(),
+                    ).height(40).
+                    black.
+                    alignCenter.
+                    withRounded(value: 10.0)
+                    .make(),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: VStack(
+                      [
+                        rad.name.text.xl.white.bold.make(),
+                        5.heightBox,
+                        rad.tagline.text.sm.white.semiBold.make(),
+                      ],
+                      crossAlignment: CrossAxisAlignment.center,
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: [
+                        Icon(
+                          CupertinoIcons.play_circle,
+                          color: Colors.white,
+                        ),
+                        10.heightBox,
+                        "Double tap to play".text.gray300.make(),
+                      ].vStack())
+                ]))
+                .clip(Clip.antiAlias)
+                    .bgImage(
+                      DecorationImage(
+                          image: NetworkImage(rad.image),
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.3), BlendMode.darken)),
+                    )
+                    .border(color: Colors.black, width: 5.0)
+                    .withRounded(value: 60.0)
+                    .make()
+                    .onInkDoubleTap(() {})
+                    .p16()
+                    .centered();
               },
-            )
+            ).centered(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Icon(
+                CupertinoIcons.stop_circle,
+                color:Colors.white,
+                size:50.0,
+              ),
+            ).pOnly(bottom: context.percentHeight*12)
           ],
+          fit: StackFit.expand,
         ));
   }
 }
